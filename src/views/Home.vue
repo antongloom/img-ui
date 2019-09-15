@@ -1,9 +1,9 @@
 <template>
   <div class="Home">
     	<input type="file" @change="onFileSelected">
-    	<input type="submit" @click="onUpload">
-    		<div>
-    			{{picters}}
+    	<input type="submit" @click.prevent="onUpload">
+    		<div v-for="picter in picters">
+    		<img :src=picter>
     		</div>
   </div>
 </template>
@@ -34,7 +34,13 @@ export default {
   		fd.append('img', this.selectedFile, this.selectedFile.name)
   		
   		axios.post('http://antongek.beget.tech/index.php',fd)
-  			.then(res => {console.log(res)})
+  			.then(response => {
+      	if(response.data.error) {
+      		 this.errorMessage = response.data.message
+      	} else {
+      		this.getAllImg()
+      	}
+      })
   	},
   	getAllImg() {
   		axios 
@@ -44,7 +50,6 @@ export default {
       		 this.errorMessage = response.data.message
       	} else {
       		this.picters = response.data.picters
-      		console.log(this.picters)
       	}
       })
   	},
