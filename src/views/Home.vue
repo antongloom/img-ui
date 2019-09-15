@@ -1,18 +1,55 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="Home">
+    	<input type="file" @change="onFileSelected">
+    	<input type="submit" @click="onUpload">
+    	<div >
+    		<div v-for="picter in picters">
+    			{{picter.id}}
+    		</div>
+    	</div>
   </div>
 </template>
 
+<style lang="stylus" scoped>
+	.Home
+		max-width 900px
+		margin 100px auto
+</style>
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import axios from 'axios'
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld
+  username: 'home',
+  data: () => ({
+  	selectedFile: null,
+  	picters: []
+  }),
+  mounted() {
+  		this.getAllImg()
+  },
+  methods: {
+  	onFileSelected(event) {
+  		this.selectedFile = event.target.files[0]
+  	},
+  	onUpload() {
+  		const fd = new FormData()
+  		fd.append('img', this.selectedFile, this.selectedFile.name)
+  		
+  		axios.post('http://antongek.beget.tech/index.php',fd)
+  			.then(res => {console.log(res)})
+  	},
+  	getAllImg() {
+  		axios 
+      .get("http://antongek.beget.tech/view.php")
+      .then(response => {
+      	if(response.data.error) {
+      		 this.errorMessage = response.data.message
+      	} else {
+      		this.picters = response.data
+      	}
+      })
+  	},
   }
 }
 </script>
+
