@@ -1,11 +1,11 @@
+
 ﻿<?php
 
-$server = "localhost";
-$username = 'antongek_form';
-$password = 'antongloom777';
-$dbname = 'antongek_form';
+$server = $_SERVER['SERVER_ADDR'];
+$username = 'root';
+$password = '';
+$dbname = 'img_upld';
 $charset = 'utf8';
-
 
 $connection = new mysqli($server, $username, $password, $dbname);
 

@@ -2,11 +2,9 @@
   <div class="Home">
     	<input type="file" @change="onFileSelected">
     	<input type="submit" @click="onUpload">
-    	<div >
-    		<div v-for="picter in picters">
-    			{{picter.id}}
+    		<div>
+    			{{picters}}
     		</div>
-    	</div>
   </div>
 </template>
 
@@ -45,7 +43,8 @@ export default {
       	if(response.data.error) {
       		 this.errorMessage = response.data.message
       	} else {
-      		this.picters = response.data
+      		this.picters = response.data.picters
+      		console.log(this.picters)
       	}
       })
   	},
